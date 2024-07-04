@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <future>
+#include <functional>
 #include <thread>
 #include <mutex>
 #include <queue>

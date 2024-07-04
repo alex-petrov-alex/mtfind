@@ -1,3 +1,4 @@
+#include "File.h"
 #include "MtFind.h"
 
 #include <iostream>
@@ -14,20 +15,18 @@ int main(int argc, char* argv[])
             case 1: throw std::runtime_error("Отсутствует файл");
             case 2: throw std::runtime_error("Отсутствует файл и маска");
         }
+        File file(argv[1]);
+        file.Read();
         
-        MtFind mtFind(argv[1], argv[2]);
-        mtFind.Read();
-        mtFind.Print();
+        MtFind mtFind(argv[2], file.GetData());
+        mtFind.GetResults();
+        mtFind.PrintResults();
     }
-    catch (std::runtime_error& exception)
+    catch (const std::exception& exception)
     {
         std::cerr << exception.what() << std::endl;
     }
-    catch (std::exception& exception)
-    {
-        std::cerr << exception.what() << std::endl;
-    }
-    catch(...)
+    catch (...)
     {
         std::cerr << "Неизвестная ошибка!" << std::endl;
     }

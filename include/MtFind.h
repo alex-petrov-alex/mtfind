@@ -1,28 +1,25 @@
 #pragma once
 
-#include <string>
 #include <list>
-#include <mutex>
+#include <string>
+#include <memory>
 
-struct Result
-{
-    uint64_t row;
-    uint64_t column;
-    std::string match;
-};
 
 class MtFind
 {
+    using Data = std::list<std::pair<std::string, uint64_t>>;
+    
 public:
-    MtFind(const std::string& iFileName, const std::string& iMask) noexcept;
-    void Read();
-    void Print();
+    MtFind(const std::string& iMask, const Data& iData);
+    ~MtFind();
+    void GetResults();
+    void PrintResults();
     
 private:
-    void FindMatch(const std::string& str, uint64_t row);
+    void SortResults();
     
-    std::mutex _mutex;
-    std::string _fileName;
-    std::string _mask;
+    class KMP;
+    std::unique_ptr<KMP> _kmp;
+    class Result;
     std::list<Result> _results;
 };

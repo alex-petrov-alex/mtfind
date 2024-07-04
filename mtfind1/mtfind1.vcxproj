@@ -130,10 +130,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\File.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\MtFind.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\File.h" />
     <ClInclude Include="..\include\MtFind.h" />
     <ClInclude Include="..\include\ThreadPool.h" />
   </ItemGroup>
