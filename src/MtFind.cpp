@@ -58,21 +58,20 @@ public:
     {
         CalculateLPS();
         
-        ThreadSafeQueue exception_queue;
         ThreadPool pool;
         
-        std::for_each(std::execution::par, _data.begin(), _data.end(), [this, &pool, &exception_queue, &results](auto&& line)
+        std::for_each(/*std::execution::par,*/ _data.begin(), _data.end(), [this, &pool, &results](auto&& line)
         {
-            pool.AddTask(&KMP::Search, this, std::cref(line.first), line.second, std::ref(results), std::ref(exception_queue));
+            pool.AddTask(&KMP::Search, this, std::cref(line.first), line.second, std::ref(results));
         });
         
         /// Обработка всех исключений, пойманных в потоках
-        while (!exception_queue.Empty())
+        while (!_exception_queue.Empty())
         {
             try
             {
-                auto [exception, thread_id] = exception_queue.Front();
-                exception_queue.Pop();
+                auto [exception, thread_id] = _exception_queue.Front();
+                _exception_queue.Pop();
                 std::cout << "Поток: " << thread_id << " ";
                 std::rethrow_exception(exception);
             }
@@ -123,7 +122,7 @@ private:
         }
     }
     
-    void Search(const std::string& str, uint64_t row, std::list<Result>& results, ThreadSafeQueue& exception_queue)
+    void Search(const std::string& str, uint64_t row, std::list<Result>& results)
     {
         try
         {
@@ -163,7 +162,7 @@ private:
         catch (...)
         {
             /// Deadlock не возможен, т.к. после обработки исключения запись результатов невозможна
-            exception_queue.Emplace(std::current_exception(), std::this_thread::get_id());
+            _exception_queue.Emplace(std::current_exception(), std::this_thread::get_id());
         }
     }
     
@@ -172,6 +171,7 @@ private:
     const Data _data;
     std::mutex _mutex;
     std::vector<uint64_t> _lps; // Longest prefix-suffix
+    ThreadSafeQueue _exception_queue;
 };
 
 
