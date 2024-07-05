@@ -54,13 +54,13 @@ public:
     }
     
     // Time: O(n+m), где n — длина строки, а m — длина подстроки, Memory: O(m)
-    void GetResults(std::list<Result>& results)
+    void CalculateResults(std::list<Result>& results)
     {
         CalculateLPS();
         
         ThreadPool pool;
         
-        std::for_each(/*std::execution::par,*/ _data.begin(), _data.end(), [this, &pool, &results](auto&& line)
+        std::for_each(std::execution::par, _data.begin(), _data.end(), [this, &pool, &results](const auto& line)
         {
             pool.AddTask(&KMP::Search, this, std::cref(line.first), line.second, std::ref(results));
         });
@@ -186,9 +186,9 @@ MtFind::~MtFind()
     
 }
 
-void MtFind::GetResults()
+void MtFind::CalculateResults()
 {
-    _kmp->GetResults(_results);
+    _kmp->CalculateResults(_results);
 }
 
 void MtFind::SortResults()

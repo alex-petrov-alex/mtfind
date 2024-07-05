@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClInclude Include="..\include\File.h" />
     <ClInclude Include="..\include\MtFind.h" />
+    <ClInclude Include="..\include\Queue.h" />
     <ClInclude Include="..\include\ThreadPool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

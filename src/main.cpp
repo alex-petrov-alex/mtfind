@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
         file.Read();
         
         MtFind mtFind(argv[2], file.GetData());
-        mtFind.GetResults();
+        mtFind.CalculateResults();
         mtFind.PrintResults();
     }
     catch (const std::exception& exception)

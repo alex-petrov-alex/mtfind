@@ -12,7 +12,7 @@ class MtFind
 public:
     MtFind(const std::string& iMask, const Data& iData);
     ~MtFind();
-    void GetResults();
+    void CalculateResults();
     void PrintResults();
     
 private:
